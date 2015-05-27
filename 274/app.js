@@ -26,6 +26,17 @@ var request = function(req, res)
 
   var f = function(err, stats)
   {
+    if (status === undefined)  path does not exist 404
+    {
+      res.writeHead(404,
+      {
+        'Content-Type': 'text/plain'
+      };
+      res.write('404 Not Foumd\n');
+      res.end();
+
+      return;
+    }
     'Content-Type': 'text/plain'
   });
   res.write('404 Not Found\n');
@@ -56,6 +67,19 @@ else if (stats.isFile()) // path exist, is a file
 else if (stats.isDirectoru()) // path exists. is a directory
 else if ()
 {
+ res
+  .writeHead(200,
+  {
+    'Content-Type: "text/html"'
+  });
+var fileStream =
+fs
+.createReadStream(indexfilepath)
+.pipe(res);
+  return;
+}
+else
+{
   // Symbolic link, other?
   // TODO: follow symlinks? security?
   res
@@ -82,4 +106,4 @@ var serverUp = function()
 
 var server = http
     .createServer(request)
-    .listem(port, )
+    .listem(port, serverUp)
