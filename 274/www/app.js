@@ -19,40 +19,42 @@ var request = function(req, res)
 {
   var uri = url.parse(req.url).pathname;
   var dir = path.parse(req.url).pathname;
-  var filepath = path.join(dir, unescape(url);
+  var filepath = path.join(dir, unescape(url));
   var indexfilepath = path.join(dir, unescape('index.html'));
 
   console.info('filepath', filepath);
 
   var f = function(err, stats)
   {
-    if (status === undefined)  path does not exist 404
+    if (status === undefined) // path does not exist 404
     {
       res.writeHead(404,
       {
         'Content-Type': 'text/plain'
-      };
+      });
       res.write('404 Not Foumd\n');
       res.end();
 
       return;
     }
-    'Content-Type': 'text/plain'
   });
-  res.write('404 Not Found\n');
-
-  return;
 }
-else if (stats.isFile()) // path exist, is a file
+else if (stats.isFile()) // path exists, is a file
 {
-  var mimeType = ;
+  var mimeType = mimeTypes[path.exname(filepapth)];
   res
     .writeHead(200,
     {
+        'Content-Type': 'text/plain'
     });
-  var fileStream = 
+  var fileStream =
+    fs
+    .createReadStream(filepath)
+    .pipe(res);
+
   return;
 }
+else if (stats.isDirectory()) // path exists, is a directory
 {
   res
     .writeHead(200,
@@ -63,6 +65,7 @@ else if (stats.isFile()) // path exist, is a file
     fs
     .createReadStream(indexfilepath)
     .pipe(res)
+  return;
 }
 else if (stats.isDirectoru()) // path exists. is a directory
 else if ()
