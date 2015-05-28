@@ -1,10 +1,10 @@
 var port = 9999;
 var directory = 'www';
 
-var http = requre('http');
-var url = requre('url');
-var path = requre('path');
-var fs = requre('fs');
+var http = require('http');
+var url = require('url');
+var path = require('path');
+var fs = require('fs');
 
 var minTypes = {
   "html": "text/html",
@@ -18,7 +18,7 @@ var minTypes = {
 var request = function(req, res)
 {
   var uri = url.parse(req.url).pathname;
-  var dir = path.parse(req.url).pathname;
+  var dir = path.join(__dirname, directory);
   var filepath = path.join(dir, unescape(url));
   var indexfilepath = path.join(dir, unescape('index.html'));
 
@@ -26,7 +26,7 @@ var request = function(req, res)
 
   var f = function(err, stats)
   {
-    if (status === undefined) // path does not exist 404
+    if (stats === undefined) // path does not exist 404
     {
       res.writeHead(404,
       {
@@ -37,67 +37,52 @@ var request = function(req, res)
 
       return;
     }
-  });
-}
-else if (stats.isFile()) // path exists, is a file
-{
-  var mimeType = mimeTypes[path.exname(filepapth)];
-  res
-    .writeHead(200,
+    else if (stats.isFile()) // path exists, is a file
     {
-        'Content-Type': 'text/plain'
-    });
-  var fileStream =
-    fs
-    .createReadStream(filepath)
-    .pipe(res);
+      var mimeType = mimeTypes[path.exname(filepapth)];
+      res
+        .writeHead(200,
+        {
+          'Content-Type': 'text/plain'
+        });
+      var fileStream =
+        fs
+        .createReadStream(filepath)
+        .pipe(res);
 
-  return;
-}
-else if (stats.isDirectory()) // path exists, is a directory
-{
-  res
-    .writeHead(200,
-      'Content-Type': 'text/plain'
-    ));
+      return;
+    }
+    else if (stats.isDirectory()) // path exists, is a directory
+    {
+      res
+        .writeHead(200,
+        {
+          'Content-Type': 'text/plain'
+        });
 
-  var fileStream = 
-    fs
-    .createReadStream(indexfilepath)
-    .pipe(res)
-  return;
-}
-else if (stats.isDirectoru()) // path exists. is a directory
-else if ()
-{
- res
-  .writeHead(200,
-  {
-    'Content-Type: "text/html"'
-  });
-var fileStream =
-fs
-.createReadStream(indexfilepath)
-.pipe(res);
-  return;
-}
-else
-{
-  // Symbolic link, other?
-  // TODO: follow symlinks? security?
-  res
-    .writeHead(500,
-  {
-    'Content-Type': 'text/plain'
-  })
-    .write('500 Internal sercerwrro\n')
-    .end();
+      var fileStream =
+        fs
+          .createReadStream(indexfilepath)
+          .pipe(res)
+        return;
+      }
+      else
+      {
+        // Symbolic link, other?
+        // TODO: follow symlinks? security?
+        res
+          .writeHead(500,
+          {
+            'Content-Type': 'text/plain'
+          })
+          .write('500 Internal sercerwrro\n')
+          .end();
 
       return;
     }
   };
 
-  var component = fs.start(filepath, f);
+  var component = fs.stat(filepath, f);
   return;
 };
 
@@ -109,4 +94,4 @@ var serverUp = function()
 
 var server = http
     .createServer(request)
-    .listem(port, serverUp)
+    .listen(port, serverUp)
