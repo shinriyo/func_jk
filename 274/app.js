@@ -19,7 +19,7 @@ var request = function(req, res)
 {
   var uri = url.parse(req.url).pathname;
   var dir = path.join(__dirname, directory);
-  var filepath = path.join(dir, unescape(url));
+  var filepath = path.join(dir, unescape(uri));
   var indexfilepath = path.join(dir, unescape('index.html'));
 
   console.info('filepath', filepath);
@@ -35,6 +35,7 @@ var request = function(req, res)
       res.write('404 Not Foumd\n');
       res.end();
 
+
       return;
     }
     else if (stats.isFile()) // path exists, is a file
@@ -47,7 +48,7 @@ var request = function(req, res)
         });
       var fileStream =
         fs
-        .createReadStream(filepath)
+        .createReadStream(index)
         .pipe(res);
 
       return;
