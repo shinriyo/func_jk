@@ -9,3 +9,9 @@ https://facebook.github.io/react/
 npm install timecomponent
 npm install moment
 ```
+
+P369
+http://sakurafunctional.github.io/demo/frp-redball-delay/index.html
+
+p372
+http://sakurafunctional.github.io/demo/frp-blueball-drag/index.html
