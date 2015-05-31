@@ -4,3 +4,8 @@
 
 
 https://facebook.github.io/react/
+
+```
+npm install timecomponent
+npm install moment
+```
